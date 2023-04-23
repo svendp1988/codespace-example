@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk
+FROM openjdk:19-jdk
 
 # Install Maven
 RUN apt-get update && \
