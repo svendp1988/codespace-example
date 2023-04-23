@@ -1,19 +1,17 @@
 FROM openjdk:19-jdk
 
-# Install Maven
-RUN apt-get update && \
-    apt-get install -y maven
+# Install Gradle
+RUN wget https://services.gradle.org/distributions/gradle-7.3-bin.zip -P /tmp \
+    && unzip -d /opt/gradle /tmp/gradle-*.zip \
+    && rm /tmp/gradle-*.zip
 
-# Install H2 database
-RUN curl -L -o h2.jar http://repo2.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
+# Set environment variables
+ENV GRADLE_HOME=/opt/gradle/gradle-7.3
+ENV PATH=${GRADLE_HOME}/bin:${PATH}
 
-# Set up Thymeleaf
-RUN mkdir /thymeleaf && \
-    cd /thymeleaf && \
-    git clone https://github.com/thymeleaf/thymeleaf.git
+# Copy project files
+COPY . /app
+WORKDIR /app
 
-# Set the working directory
-WORKDIR /workspace
-
-# Expose port 8080 for web access
-EXPOSE 8080
+# Build project
+RUN gradle build
