@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM openjdk:11-jdk
 
 # Install Maven
 RUN apt-get update && \
